@@ -32,6 +32,16 @@ public class NavDrawerActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        String localHost = "127.0.0.1";
+        String localPort = "9000";
+        String serverHost = "127.0.0.1";
+        String serverPort = "5683";
+        //LeshanClientExample.main(new String[]{localHost, localPort, serverHost, serverPort});
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
