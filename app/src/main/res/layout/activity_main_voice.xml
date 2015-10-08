@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#0a000a"
+    android:padding="10dp"
+    tools:context=".MainActivity"
+    android:clickable="false"
+    android:textAlignment="center">
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/editCurrent"
+        android:hint=" -- "
+        android:textAlignment="center"
+        android:singleLine="true"
+        android:layout_marginTop="46dp"
+        android:bottomRightRadius="15dp"
+        android:bottomLeftRadius="15dp"
+        android:topLeftRadius="15dp"
+        android:topRightRadius="15dp"
+        android:background="#aaa"
+        android:textColor="#0c000c"
+        android:ems="10"
+        android:inputType="textCapWords"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/editLimit" />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/editLimit"
+        android:textAlignment="center"
+        android:bottomRightRadius="15dp"
+        android:bottomLeftRadius="15dp"
+        android:topLeftRadius="15dp"
+        android:topRightRadius="15dp"
+        android:layout_marginLeft="50dp"
+        android:hint=" -- "
+        android:background="#aaa"
+        android:textColor="#0c000c"
+        android:ems="10"
+        android:digits="12345"
+        android:enabled="true"
+        android:layout_alignTop="@+id/editCurrent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="71dp"
+        android:layout_alignBottom="@+id/editCurrent" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nextBtn"
+        android:background="#86f43c"
+        android:textColor="#0c000c"
+        android:text="Register"
+        android:layout_marginBottom="81dp"
+        android:layout_above="@+id/editText"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:textColor="#f4f2e3"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Speed"
+        android:id="@+id/textView"
+        android:textColor="#f4f2e3"
+        android:layout_below="@+id/editCurrent"
+        android:layout_alignStart="@+id/editCurrent"
+        android:layout_toStartOf="@+id/nextBtn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Speed Limit"
+        android:id="@+id/textView1"
+        android:textColor="#f4f2e3"
+        android:layout_alignStart="@+id/editLimit"
+        android:layout_alignTop="@+id/textView"
+        android:layout_alignEnd="@+id/editLimit" />
+
+</RelativeLayout>

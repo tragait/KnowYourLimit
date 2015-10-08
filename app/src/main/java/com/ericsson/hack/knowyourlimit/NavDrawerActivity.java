@@ -2,17 +2,35 @@ package com.ericsson.hack.knowyourlimit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.Locale;
 
 public class NavDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, TextToSpeech.OnInitListener {
+
+    private TextToSpeech tts;
+    private Button button1;
+    private int fixedValue = 20;
+    private int beforeAlert = 5;
+    TextView textView1;
+    TextView textView2;
+    TextView textView3;
+    private String textWrite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +47,47 @@ public class NavDrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        textView1 = (TextView) findViewById(R.id.editCurrent);
+        textView1.setGravity(Gravity.CENTER);
+        textView2 = (TextView) findViewById(R.id.editLimit);
+        textView2.setGravity(Gravity.CENTER);
+        textView3 = (TextView) findViewById(R.id.editText);
+        button1 = (Button) findViewById(R.id.nextBtn);
+        textView3.setVisibility(View.INVISIBLE);
+        tts = new TextToSpeech(this, this);
+        button1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                CountDownTimer myCountDown = new CountDownTimer(50000, 5000) {
+                    public void onTick(long millisUntilFinished) {
+                        textView1.setText(String.valueOf((50000 - millisUntilFinished) / 1000));
+                        textView2.setText("20");
+                        textWrite = setSpeed((50000 - millisUntilFinished) / 1000);
+                        button1.setVisibility(View.INVISIBLE);
+                        textView3.setVisibility(View.VISIBLE);
+                        textView3.setText(textWrite);
+                    }
+
+                    public void onFinish() {
+                        textView1.setText(" -- ");
+                        textView2.setText(" -- ");
+                        textView1.setBackground(getResources().getDrawable(R.drawable.rectangular_gray));
+                        button1.setVisibility(View.VISIBLE);
+                        textView3.setVisibility(View.INVISIBLE);
+                    }
+                };
+                myCountDown.start();
+            }
+        });
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        String localHost = "127.0.0.1";
-        String localPort = "9000";
-        String serverHost = "127.0.0.1";
-        String serverPort = "5683";
-        //LeshanClientExample.main(new String[]{localHost, localPort, serverHost, serverPort});
+        COAPClient.main(new String[]{"coap://100.96.67.117:5683/"});
     }
 
     @Override
@@ -83,5 +132,47 @@ public class NavDrawerActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = tts.setLanguage(Locale.US);
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "This Language is not supported");
+            }
+        } else {
+            Log.e("TTS", "Initilization Failed!");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
+
+    private String setSpeed(long speed) {
+
+        if (speed <= fixedValue && (fixedValue - speed) == beforeAlert) {
+            tts.setSpeechRate(1.0f);
+            tts.setLanguage(Locale.US);
+            String text = "100 meter from school zone. Speed limit is 30km/h..";
+            textWrite = text;
+            tts.speak(text, TextToSpeech.QUEUE_ADD, null);
+        }
+        if (speed > fixedValue) {
+            String text = "You have exceeded the speed limit. Please Slow Down..";
+            tts.setLanguage(Locale.US);
+            tts.speak(text, TextToSpeech.QUEUE_ADD, null);
+            textWrite = text;
+            tts.setSpeechRate(1.0f);
+            textView1.setBackground(getResources().getDrawable(R.drawable.rectangular_red));
+        }
+        return textWrite;
     }
 }
