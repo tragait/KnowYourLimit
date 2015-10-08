@@ -123,7 +123,8 @@ public class NavDrawerActivity extends AppCompatActivity
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_alert) {
-            // Don't use at the moment.
+            Intent intent = new Intent(this, AlertActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
