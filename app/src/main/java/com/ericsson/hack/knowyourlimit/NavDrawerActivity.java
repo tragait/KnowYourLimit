@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,9 +48,7 @@ public class NavDrawerActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         textView1 = (TextView) findViewById(R.id.editCurrent);
-        textView1.setGravity(Gravity.CENTER);
         textView2 = (TextView) findViewById(R.id.editLimit);
-        textView2.setGravity(Gravity.CENTER);
         textView3 = (TextView) findViewById(R.id.editText);
         button1 = (Button) findViewById(R.id.nextBtn);
         textView3.setVisibility(View.INVISIBLE);
@@ -60,10 +57,11 @@ public class NavDrawerActivity extends AppCompatActivity
 
             @Override
             public void onClick(View arg0) {
+                COAPClient.getSpeedLimit(Constants.URI_SPEED_LIMIT);
                 CountDownTimer myCountDown = new CountDownTimer(50000, 5000) {
                     public void onTick(long millisUntilFinished) {
                         textView1.setText(String.valueOf((50000 - millisUntilFinished) / 1000));
-                        textView2.setText("20");
+                        textView2.setText(String.valueOf(fixedValue));
                         textWrite = setSpeed((50000 - millisUntilFinished) / 1000);
                         button1.setVisibility(View.INVISIBLE);
                         textView3.setVisibility(View.VISIBLE);
@@ -87,7 +85,6 @@ public class NavDrawerActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        COAPClient.main(new String[]{"coap://100.96.67.117:5683/"});
     }
 
     @Override
@@ -125,7 +122,7 @@ public class NavDrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_map) {
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_alert) {
             // Don't use at the moment.
         }
 

@@ -29,46 +29,34 @@ public class COAPClient {
      * Application entry point.
      *
      */
-    public static void main(String args[]) {
+    public static int getSpeedLimit(String locationUri) {
 
-        URI uri = null; // URI parameter of the request
+        URI uri = null;
 
-        if (args.length > 0) {
+        try {
+            uri = new URI(locationUri);
+        } catch (URISyntaxException e) {
+            System.err.println("Invalid URI: " + e.getMessage());
+            System.exit(-1);
+        }
 
-            // input URI from command line arguments
-            try {
-                uri = new URI(args[0]);
-            } catch (URISyntaxException e) {
-                System.err.println("Invalid URI: " + e.getMessage());
-                System.exit(-1);
-            }
+        CoapClient client = new CoapClient(uri);
 
-            CoapClient client = new CoapClient(uri);
+        CoapResponse response = client.get();
 
-            CoapResponse response = client.get();
+        if (response != null) {
 
-            if (response != null) {
+            System.out.println(response.getCode());
+            System.out.println(response.getOptions());
+            System.out.println(response.getResponseText());
 
-                System.out.println(response.getCode());
-                System.out.println(response.getOptions());
-                System.out.println(response.getResponseText());
-
-                System.out.println("\nADVANCED\n");
-                // access advanced API with access to more details through .advanced()
-                System.out.println(Utils.prettyPrint(response));
-
-            } else {
-                System.out.println("No response received.");
-            }
+            System.out.println("\nADVANCED\n");
+            // access advanced API with access to more details through .advanced()
+            System.out.println(Utils.prettyPrint(response));
 
         } else {
-            // display help
-            System.out.println("Californium (Cf) GET Client");
-            System.out.println("(c) 2014, Institute for Pervasive Computing, ETH Zurich");
-            System.out.println();
-            System.out.println("Usage: " + COAPClient.class.getSimpleName() + " URI");
-            System.out.println("  URI: The CoAP URI of the remote resource to GET");
+            System.out.println("No response received.");
         }
+        return 0;
     }
-
 }

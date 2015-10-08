@@ -37,9 +37,9 @@
         android:id="@+id/editLimit"
         android:layout_width="150dp"
         android:layout_height="140dp"
-        android:layout_alignEnd="@+id/editText"
+        android:layout_toRightOf="@+id/editCurrent"
         android:layout_alignTop="@+id/editCurrent"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="30dp"
         android:background="@drawable/rectangular_gray"
         android:bottomLeftRadius="15dp"
         android:bottomRightRadius="15dp"
@@ -52,28 +52,6 @@
         android:textStyle="bold"
         android:topLeftRadius="15dp"
         android:topRightRadius="15dp" />
-
-    <Button
-        android:id="@+id/nextBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="81dp"
-        android:background="@drawable/side_nav_bar"
-        android:text="Start"
-        android:textColor="#0c000c" />
-
-    <TextView
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textColor="#f4f2e3" />
 
     <TextView
         android:id="@+id/currentSpeed"
@@ -91,6 +69,30 @@
         android:layout_below="@+id/editLimit"
         android:layout_toEndOf="@+id/nextBtn"
         android:text="Speed Limit"
+        android:textColor="#f4f2e3" />
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentSpeed"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/side_nav_bar"
+        android:text="Start"
+        android:textColor="#0c000c" />
+
+    <TextView
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:ems="10"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:inputType="textPersonName"
         android:textColor="#f4f2e3" />
 
 </RelativeLayout>
