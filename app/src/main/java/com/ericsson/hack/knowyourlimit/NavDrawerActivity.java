@@ -24,12 +24,15 @@ public class NavDrawerActivity extends AppCompatActivity
 
     private TextToSpeech tts;
     private Button button1;
-    private int fixedValue = 20;
+    private int speedLimit;
     private int beforeAlert = 5;
-    TextView textView1;
-    TextView textView2;
-    TextView textView3;
+    private TextView textView1;
+    private TextView textView2;
+    private TextView textView3;
     private String textWrite;
+    private int currentSpeed;
+    private String message = "";
+    private boolean changed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +60,49 @@ public class NavDrawerActivity extends AppCompatActivity
 
             @Override
             public void onClick(View arg0) {
-                COAPClient.getSpeedLimit(Constants.URI_SPEED_LIMIT);
-                CountDownTimer myCountDown = new CountDownTimer(50000, 5000) {
+                currentSpeed = 0;
+
+                CountDownTimer myCountDown = new CountDownTimer(80000, 5000) {
                     public void onTick(long millisUntilFinished) {
-                        textView1.setText(String.valueOf((50000 - millisUntilFinished) / 1000));
-                        textView2.setText(String.valueOf(fixedValue));
-                        textWrite = setSpeed((50000 - millisUntilFinished) / 1000);
-                        button1.setVisibility(View.INVISIBLE);
-                        textView3.setVisibility(View.VISIBLE);
-                        textView3.setText(textWrite);
+                        currentSpeed = currentSpeed + 5;
+                        if (currentSpeed >= 50) {
+                            String responseText = COAPClient.getSpeedLimit(Constants.URI_3);
+                            String[] params = responseText.split(":");
+                            int newSpeedLimit = Integer.parseInt(params[0]);
+                            if (newSpeedLimit != speedLimit) {
+                                changed = true;
+                                speedLimit = newSpeedLimit;
+                            } else {
+                                changed = false;
+                            }
+                            message = params[1];
+                        } else if (currentSpeed >= 30) {
+                            String responseText = COAPClient.getSpeedLimit(Constants.URI_2);
+                            String[] params = responseText.split(":");
+                            int newSpeedLimit = Integer.parseInt(params[0]);
+                            if (newSpeedLimit != speedLimit) {
+                                changed = true;
+                                speedLimit = newSpeedLimit;
+                            } else {
+                                changed = false;
+                            }
+                            message = params[1];
+                        } else if (currentSpeed >= 0) {
+                            String responseText = COAPClient.getSpeedLimit(Constants.URI_1);
+                            String[] params = responseText.split(":");
+                            int newSpeedLimit = Integer.parseInt(params[0]);
+                            if (newSpeedLimit != speedLimit) {
+                                changed = true;
+                                speedLimit = newSpeedLimit;
+                            } else {
+                                changed = false;
+                            }
+                            message = params[1];
+                        }
+
+                        textView1.setText(String.valueOf(currentSpeed));
+                        textView2.setText(String.valueOf(speedLimit));
+                        setSpeed(currentSpeed);
                     }
 
                     public void onFinish() {
@@ -156,21 +193,35 @@ public class NavDrawerActivity extends AppCompatActivity
 
     private String setSpeed(long speed) {
 
-        if (speed <= fixedValue && (fixedValue - speed) == beforeAlert) {
+        button1.setVisibility(View.INVISIBLE);
+        textView3.setVisibility(View.VISIBLE);
+        textWrite = "";
+        if (speed <= speedLimit && (speedLimit - speed) == beforeAlert) {
+            //String text = "100 meter from school zone. Speed limit is 30km/h..";
+            String text = message;
+            textWrite = text;
+            textView1.setBackground(getResources().getDrawable(R.drawable.rectangular_yellow));
             tts.setSpeechRate(1.0f);
             tts.setLanguage(Locale.US);
-            String text = "100 meter from school zone. Speed limit is 30km/h..";
-            textWrite = text;
             tts.speak(text, TextToSpeech.QUEUE_ADD, null);
-        }
-        if (speed > fixedValue) {
+        } else if (speed < speedLimit) {
+            textView1.setBackground(getResources().getDrawable(R.drawable.rectangular_gray));
+            if (changed) {
+                textWrite = "Your speed limit is " + speedLimit;
+                tts.setLanguage(Locale.US);
+                tts.setSpeechRate(1.0f);
+                tts.speak(textWrite, TextToSpeech.QUEUE_ADD, null);
+            }
+        } else if (speed > speedLimit) {
             String text = "You have exceeded the speed limit. Please Slow Down..";
-            tts.setLanguage(Locale.US);
-            tts.speak(text, TextToSpeech.QUEUE_ADD, null);
             textWrite = text;
-            tts.setSpeechRate(1.0f);
             textView1.setBackground(getResources().getDrawable(R.drawable.rectangular_red));
+            tts.setLanguage(Locale.US);
+            tts.setSpeechRate(1.0f);
+            tts.speak(text, TextToSpeech.QUEUE_ADD, null);
         }
+
+        textView3.setText(textWrite);
         return textWrite;
     }
 }

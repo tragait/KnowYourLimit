@@ -21,17 +21,10 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/rectangular_gray"
-        android:bottomLeftRadius="15dp"
-        android:bottomRightRadius="15dp"
-        android:ems="10"
         android:gravity="center"
-        android:inputType="textCapWords"
-        android:singleLine="true"
-        android:text=" -- "
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp" />
+        android:text="00"
+        android:textSize="70dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/editLimit"
@@ -39,19 +32,12 @@
         android:layout_height="140dp"
         android:layout_toRightOf="@+id/editCurrent"
         android:layout_alignTop="@+id/editCurrent"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="25dp"
         android:background="@drawable/rectangular_gray"
-        android:bottomLeftRadius="15dp"
-        android:bottomRightRadius="15dp"
-        android:digits="12345"
-        android:ems="10"
-        android:enabled="true"
         android:gravity="center"
-        android:text=" -- "
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp" />
+        android:text="00"
+        android:textSize="70dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/currentSpeed"
@@ -59,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editCurrent"
         android:layout_toStartOf="@+id/nextBtn"
-        android:text="Current Speed"
+        android:text="Current Speed(km/h)"
         android:textColor="#f4f2e3" />
 
     <TextView
@@ -68,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editLimit"
         android:layout_toEndOf="@+id/nextBtn"
-        android:text="Speed Limit"
+        android:text="Speed Limit(km/h)"
         android:textColor="#f4f2e3" />
 
     <Button

@@ -29,7 +29,7 @@ public class COAPClient {
      * Application entry point.
      *
      */
-    public static int getSpeedLimit(String locationUri) {
+    public static String getSpeedLimit(String locationUri) {
 
         URI uri = null;
 
@@ -54,9 +54,10 @@ public class COAPClient {
             // access advanced API with access to more details through .advanced()
             System.out.println(Utils.prettyPrint(response));
 
+            return response.getResponseText();
         } else {
             System.out.println("No response received.");
         }
-        return 0;
+        return "";
     }
 }
