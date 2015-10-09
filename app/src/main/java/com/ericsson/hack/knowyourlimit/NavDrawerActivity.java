@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -65,8 +66,19 @@ public class NavDrawerActivity extends AppCompatActivity
                 CountDownTimer myCountDown = new CountDownTimer(80000, 5000) {
                     public void onTick(long millisUntilFinished) {
                         currentSpeed = currentSpeed + 5;
-                        if (currentSpeed >= 50) {
-                            String responseText = COAPClient.getSpeedLimit(Constants.URI_3);
+                        if (currentSpeed >= 70) {
+                            String responseText = COAPClient.doGETOperation(Constants.URI_4);
+                            String[] params = responseText.split(":");
+                            int newSpeedLimit = Integer.parseInt(params[0]);
+                            if (newSpeedLimit != speedLimit) {
+                                changed = true;
+                                speedLimit = newSpeedLimit;
+                            } else {
+                                changed = false;
+                            }
+                            message = params[1];
+                        } else if (currentSpeed >= 55) {
+                            String responseText = COAPClient.doGETOperation(Constants.URI_3);
                             String[] params = responseText.split(":");
                             int newSpeedLimit = Integer.parseInt(params[0]);
                             if (newSpeedLimit != speedLimit) {
@@ -77,7 +89,7 @@ public class NavDrawerActivity extends AppCompatActivity
                             }
                             message = params[1];
                         } else if (currentSpeed >= 30) {
-                            String responseText = COAPClient.getSpeedLimit(Constants.URI_2);
+                            String responseText = COAPClient.doGETOperation(Constants.URI_2);
                             String[] params = responseText.split(":");
                             int newSpeedLimit = Integer.parseInt(params[0]);
                             if (newSpeedLimit != speedLimit) {
@@ -88,7 +100,7 @@ public class NavDrawerActivity extends AppCompatActivity
                             }
                             message = params[1];
                         } else if (currentSpeed >= 0) {
-                            String responseText = COAPClient.getSpeedLimit(Constants.URI_1);
+                            String responseText = COAPClient.doGETOperation(Constants.URI_1);
                             String[] params = responseText.split(":");
                             int newSpeedLimit = Integer.parseInt(params[0]);
                             if (newSpeedLimit != speedLimit) {
@@ -207,13 +219,13 @@ public class NavDrawerActivity extends AppCompatActivity
         } else if (speed < speedLimit) {
             textView1.setBackground(getResources().getDrawable(R.drawable.rectangular_gray));
             if (changed) {
-                textWrite = "Your speed limit is " + speedLimit;
+                textWrite = "Now your speed limit is " + speedLimit;
                 tts.setLanguage(Locale.US);
                 tts.setSpeechRate(1.0f);
                 tts.speak(textWrite, TextToSpeech.QUEUE_ADD, null);
             }
         } else if (speed > speedLimit) {
-            String text = "You have exceeded the speed limit. Please Slow Down..";
+            String text = "Your current speed is more than the speed limit. Please Slow Down.";
             textWrite = text;
             textView1.setBackground(getResources().getDrawable(R.drawable.rectangular_red));
             tts.setLanguage(Locale.US);
@@ -221,7 +233,10 @@ public class NavDrawerActivity extends AppCompatActivity
             tts.speak(text, TextToSpeech.QUEUE_ADD, null);
         }
 
-        textView3.setText(textWrite);
+        // textView3.setText(textWrite);
+        if (!textWrite.isEmpty()) {
+            Snackbar.make(textView3, textWrite, Snackbar.LENGTH_LONG).show();
+        }
         return textWrite;
     }
 }

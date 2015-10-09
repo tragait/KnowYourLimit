@@ -1,7 +1,6 @@
 package com.ericsson.hack.knowyourlimit;
 
-import android.app.AlertDialog;
-import android.os.CountDownTimer;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,7 +22,9 @@ public class AlertActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                textView1.setText("Hello Ash karo!!!");
+                COAPClient.doGETOperation(Constants.URI_4);
+                //textView1.setText("SOS alert sent !!!");
+                Snackbar.make(textView1, "Emergency alert has been sent successfully !!!.", Snackbar.LENGTH_LONG).show();
             }
         });
     }

@@ -29,7 +29,7 @@ public class COAPClient {
      * Application entry point.
      *
      */
-    public static String getSpeedLimit(String locationUri) {
+    public static String doGETOperation(String locationUri) {
 
         URI uri = null;
 

@@ -9,8 +9,10 @@ public class Constants {
     public static final String QUERY_PARAM_1 = "?deviceId=1&lng=28.403883&lat=77.271470";
     public static final String QUERY_PARAM_2 = "?deviceId=1&lng=28.469822&lat=77.105554";
     public static final String QUERY_PARAM_3 = "?deviceId=1&lng=28.411920&lat=77.235337";
+    public static final String QUERY_PARAM_4 = "?deviceId=1&lng=28.452840&lat=77.122113&sos=emergency";
 
     public static final String URI_1 = SCHEME + HOST + ":" + PORT + "/" + PATH_SPEED_LIMIT + QUERY_PARAM_1;
     public static final String URI_2 = SCHEME + HOST + ":" + PORT + "/" + PATH_SPEED_LIMIT + QUERY_PARAM_2;
     public static final String URI_3 = SCHEME + HOST + ":" + PORT + "/" + PATH_SPEED_LIMIT + QUERY_PARAM_3;
+    public static final String URI_4 = SCHEME + HOST + ":" + PORT + "/" + PATH_SPEED_LIMIT + QUERY_PARAM_4;
 }
